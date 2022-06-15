@@ -24,3 +24,12 @@ export class AuthDto {
     stCode: string;
     head: string
 }
+
+export class loginDto {
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+    
+    @IsNotEmpty()
+    password: string;
+}
