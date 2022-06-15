@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 
@@ -8,8 +8,8 @@ export class AuthController {
     constructor(private authService: AuthService) { }
     
     @Post('signup')
-    signup(@Body() dto : AuthDto) {
-        return this.authService.signup(dto)
+    signup(@Body() dto : AuthDto, @Res({ passthrough: true }) res: Response) {
+        return this.authService.signup(dto, res )
     }
 
     @Get('signin')

@@ -1,15 +1,38 @@
-import mongoose from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export const PStModel = new mongoose.Schema({
-    name: {type: String, required: true},
-    pstid: {type: String, required: true},
-    password: { type: String, required: true },
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
-    state: String,
-    dist: String,
-    block: String,
-    pin: Number,
-    stCode: String,
-    head: String
-})
+export type PoliceStation = pstation & Document;
+@Schema()
+export class pstation {
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
+  email: string;
+  
+  @Prop({ required: true })
+  password: string;
+    
+  @Prop({ required: true })
+  phone: number;
+    
+  @Prop()  
+  state: String;
+
+  @Prop()  
+  dist: String;
+  
+  @Prop()
+  block: String;
+  
+  @Prop()
+  pin: Number;
+  
+  @Prop()
+  stCode: String;
+  
+  @Prop()
+  head: String
+}
+
+export const PStModel = SchemaFactory.createForClass(pstation);
