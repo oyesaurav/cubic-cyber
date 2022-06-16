@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { AuthDto, loginDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { PoliceStation, pstation } from './auth.model';
-import { domainToASCII } from 'url';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -64,27 +64,55 @@ export class AuthService {
       .findOne({ email: dto.email })
       .exec()
       .then(async (pst) => {
-          if (!pst) {
-              res.status(400).json({
-                  message: "Register first"
-              })
+        if (!pst) {
+          res.status(400).json({
+            message: 'Register first',
+          });
+        } else {
+          const correctPass = await bcrypt.compare(dto.password, pst.password);
+          if (!correctPass) {
+            res.status(403).json({
+              message: 'Incorrect password',
+            });
           } else {
-              const correctPass = await bcrypt.compare(dto.password, pst.password)
-              if (!correctPass) {
-                  res.status(403).json({
-                      message: "Incorrect password"
-                  })
-              } else {
-                  res.status(200).json({
-                      data : pst
-                  })
-              }
+            const accessToken = jwt.sign(
+              {
+                email: pst.email,
+                name: pst.name,
+                phone: pst.phone,
+                stCode: pst.stCode,
+              },
+              process.env.ACCESS_TOKEN_SECRET,
+              {
+                expiresIn: '1d',
+              },
+            );
+            const refreshToken = jwt.sign(
+              {
+                email: pst.email,
+                name: pst.name,
+                phone: pst.phone,
+                stCode: pst.stCode,
+              },
+              process.env.REFRESH_TOKEN_SECRET,
+            );
+            // res.set('Authorization', 'Bearer ' + accessToken);
+            res.cookie('AT', accessToken);
+            res.cookie('RT', refreshToken);
+            res.status(200).json({
+              data: pst,
+            });
+          }
         }
       })
-        .catch(err => {
-            res.status(500).json({
-              message: err
-          })
-      })
+      .catch((err) => {
+        res.status(500).json({
+          message: err,
+        });
+      });
+  }
+
+  checkAuth(req, res) {
+    res.status(200).json({isauth : true})
   }
 }
