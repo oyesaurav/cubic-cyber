@@ -4,8 +4,6 @@ import * as jwt from 'jsonwebtoken';
 export function verifyToken(req: Request, res: Response, next: NextFunction) {
   const accessToken = req.cookies.AT;
     const refreshToken = req.cookies.RT;
-  console.log(accessToken);
-  console.log(refreshToken);
 
   if (accessToken === null) return res.sendStatus(401);
 
@@ -29,13 +27,19 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
             },
           );
           res.cookie('AT', newAccessToken);
-          req.body = user;
+          req.user = user;
           next();
         },
       );
     } else {
-      req.body = user;
+      req.user = user;
       next();
     }
   });
+}
+
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?: any
+  } 
 }

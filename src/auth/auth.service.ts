@@ -113,6 +113,9 @@ export class AuthService {
   }
 
   checkAuth(req, res) {
-    res.status(200).json({isauth : true})
+    res.status(200).json({
+      isauth: true,
+      user: req.user
+    })
   }
 }
