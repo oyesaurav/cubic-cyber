@@ -17,6 +17,9 @@ export class criminals {
     address: String;
 
     @Prop()
+    photourl: String;
+    
+    @Prop()
     cases: [{
         caseId: String
     }]

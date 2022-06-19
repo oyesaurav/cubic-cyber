@@ -8,6 +8,7 @@ export class criminalDto {
     name: String;
     age: Number;
     address: String;
+    photourl: String;
     cases: [{
         caseId: String
     }]
