@@ -26,9 +26,8 @@ export class AuthDto {
 }
 
 export class loginDto {
-    @IsEmail()
     @IsNotEmpty()
-    email: string;
+    stCode: string;
     
     @IsNotEmpty()
     password: string;

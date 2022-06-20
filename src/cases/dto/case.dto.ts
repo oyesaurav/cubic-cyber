@@ -13,14 +13,16 @@ export class caseDTo {
         name: string,
         age: Number,
         aadhaarNo: Number,
-        address:  String
+        address: String,
+        gender: String
     }]
 
     victim: [{
         name: String,
         age: Number,
         aadhaarNo: Number,
-        address: String
+        address: String,
+        gender: String
     }];
 
     category: String;
@@ -31,4 +33,9 @@ export class caseDTo {
 export class stationCasesDto {
     @IsNotEmpty()
     stCode: String;
+}
+
+export class caseInfoDto {
+    @IsNotEmpty()
+    caseNo: String;
 }

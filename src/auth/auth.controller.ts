@@ -12,7 +12,7 @@ export class AuthController {
         return this.authService.signup(dto, res )
     }
 
-    @Get('signin')
+    @Post('signin')
     signin(@Body() dto : loginDto, @Res({ passthrough: true }) res: Response) {
         return this.authService.signin(dto, res )
     }

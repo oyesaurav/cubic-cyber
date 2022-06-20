@@ -7,7 +7,7 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
   console.log(accessToken);
   console.log(refreshToken);
 
-  if (accessToken === null) return res.sendStatus(401);
+  if (accessToken === null) return res.status(401).send(false)
 
   jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
@@ -15,7 +15,7 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
         (error, user) => {
-          if (error) return res.status(400).send('Auth failed');
+          if (error) return res.status(400).send(false)
           const newAccessToken = jwt.sign(
             {
               email: user.email,

@@ -34,7 +34,7 @@ export class CriminalService {
             aadhaarNo: dto.aadhaarNo,
             name: dto.name,
             age: dto.age,
-            photourl: dto.photourl,
+            gender: dto.gender,
             address: dto.address,
             cases: [],
           });

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { caseDTo, stationCasesDto } from './dto';
+import { caseDTo, caseInfoDto, stationCasesDto } from './dto';
 import { caseDoc, cases } from './schema/cases.model';
 import { criminalDoc, criminals } from './schema/criminals.model';
 
@@ -80,8 +80,6 @@ export class CasesService {
             accusedAadhaarNo: accusedAadhaars,
             victim: dto.victim,
             category: dto.category,
-            latitude: dto.latitude,
-            longitude: dto.longitude,
           });
           await newCase
             .save()
@@ -126,7 +124,7 @@ export class CasesService {
             }),
           );
           res.status(200).json({
-            data: arr,
+            monthCases: arr,
           });
         }
       })
@@ -169,7 +167,7 @@ export class CasesService {
           }
           console.log(arr);
           res.status(200).json({
-            data: arr
+            categoryCases: arr
           })         
         }
       })
@@ -180,5 +178,36 @@ export class CasesService {
           message: 'Db error, please try again',
         });
       });
+  }
+
+  async caseInfo(dto: caseInfoDto, res) {
+    await this.caseModel.findOne({ caseNo: dto.caseNo })
+      .exec()
+      .then(async savedcase => {
+        if (!savedcase) {
+        res.status(409).send("case not found")
+        } else {
+          const criminals = []
+          await Promise.all(savedcase.accusedAadhaarNo.map(async criminalAadhaar => {
+            await this.criminalModel.findOne({ aadhaarNo: criminalAadhaar })
+              .exec()
+              .then(criminalInfo => {
+              criminals.push(criminalInfo)
+            })
+          }))
+
+          res.status(200).json({
+            caseInfo: savedcase,
+            criminalsInfo: criminals
+          })
+      }
+      })
+      .catch(err => {
+        console.log(err);
+
+        res.status(500).json({
+          message: 'Db error, please try again',
+        });
+    })
   }
 }

@@ -60,8 +60,9 @@ export class AuthService {
   }
 
   async signin(dto: loginDto, res) {
+    
     await this.model
-      .findOne({ email: dto.email })
+      .findOne({ stCode : dto.stCode })
       .exec()
       .then(async (pst) => {
         if (!pst) {
@@ -97,8 +98,10 @@ export class AuthService {
               process.env.REFRESH_TOKEN_SECRET,
             );
             // res.set('Authorization', 'Bearer ' + accessToken);
+            
             res.cookie('AT', accessToken);
             res.cookie('RT', refreshToken);
+            
             res.status(200).json({
               data: pst,
             });
@@ -113,6 +116,6 @@ export class AuthService {
   }
 
   checkAuth(req, res) {
-    res.status(200).json({isauth : true})
+    res.status(200).send(true)
   }
 }
