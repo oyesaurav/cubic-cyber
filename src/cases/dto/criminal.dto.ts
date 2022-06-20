@@ -10,6 +10,6 @@ export class criminalDto {
     address: String;
     photourl: String;
     cases: [{
-        caseId: String
+        caseNo: String
     }]
 }

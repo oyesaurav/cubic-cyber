@@ -1,6 +1,6 @@
-import { Body, Controller, Post, Res} from '@nestjs/common';
+import { Body, Controller, Get, Post, Res} from '@nestjs/common';
 import { CasesService } from './cases.service';
-import { caseDTo, criminalDto } from './dto';
+import { caseDTo, criminalDto,stationCasesDto } from './dto';
 import { Response } from 'express';
 
 @Controller('case')
@@ -12,5 +12,13 @@ export class CasesController {
         return this.caseService.caseRegister(dto , res)
     }
 
-    
+    @Get('monthcases')
+    monthlyCases(@Res({ passthrough: true }) res: Response, @Body() dto: stationCasesDto) {
+        return this.caseService.monthlycases(dto,res)
+    }
+
+    @Get('categorywise')
+    categoryWise(@Res({ passthrough: true }) res: Response, @Body() dto: stationCasesDto) {
+        return this.caseService.categoryWise(dto,res)
+    }
 }

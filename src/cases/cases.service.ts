@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { caseDTo } from './dto';
+import { caseDTo, stationCasesDto } from './dto';
 import { caseDoc, cases } from './schema/cases.model';
 import { criminalDoc, criminals } from './schema/criminals.model';
 
@@ -23,6 +23,53 @@ export class CasesService {
             message: 'Case no. already registered',
           });
         } else {
+          const accusedAadhaars = [];
+          await Promise.all(
+            dto.accused.map(async (criminal) => {
+              accusedAadhaars.push(criminal.aadhaarNo);
+              await this.criminalModel
+                .findOne({ aadhaarNo: criminal.aadhaarNo })
+                .exec()
+                .then(async (saved) => {
+                  if (saved) {
+                    await this.criminalModel.updateOne(
+                      { aadhaarNo: saved.aadhaarNo },
+                      {
+                        $set: { age: criminal.age },
+                        $push: {
+                          address: criminal.address,
+                          cases: { caseNo: dto.caseNo },
+                        },
+                      },
+                    );
+                  } else {
+                    const newCriminal = new this.criminalModel({
+                      aadhaarNo: criminal.aadhaarNo,
+                      name: criminal.name,
+                      age: criminal.age,
+                      address: criminal.address,
+                      cases: [
+                        {
+                          caseNo: dto.caseNo,
+                        },
+                      ],
+                    });
+                    await newCriminal
+                      .save()
+                      .then((result) => {
+                        console.log(result);
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }),
+          );
+
           const newCase = new this.caseModel({
             caseNo: dto.caseNo,
             section: dto.section,
@@ -30,19 +77,15 @@ export class CasesService {
             solved: dto.solved,
             stCode: dto.stCode,
             severity: dto.severity,
-            accusedAadhaarNo: dto.accusedAadhaarNo,
+            accusedAadhaarNo: accusedAadhaars,
             victim: dto.victim,
             category: dto.category,
+            latitude: dto.latitude,
+            longitude: dto.longitude,
           });
           await newCase
             .save()
-              .then(async (result) => {
-                
-                  await Promise.all(result.accusedAadhaarNo.map(async (aadhaar) => {
-                    await this.criminalModel.updateOne({ aadhaarNo: aadhaar }, {
-                     $push: {cases: {caseId : result._id}}
-                  })
-              })) 
+            .then(async (result) => {
               console.log(result);
               res.status(201).json({
                 message: 'case registered',
@@ -54,6 +97,80 @@ export class CasesService {
                 message: "Couldn't save the case",
               });
             });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+
+        res.status(500).json({
+          message: 'Db error, please try again',
+        });
+      });
+  }
+
+  async monthlycases(dto: stationCasesDto, res) {
+    await this.caseModel
+      .find({ stCode: dto.stCode })
+      .exec()
+      .then(async (stCases) => {
+        if (!stCases) {
+          res.status(409).json({
+            message: 'No registered cases',
+          });
+        } else {
+          let arr = new Array(12);
+          for (let i = 0; i < 12; ++i) arr[i] = 0;
+          await Promise.all(
+            stCases.map((eachcase) => {
+              arr[eachcase.date.getMonth()]++;
+            }),
+          );
+          res.status(200).json({
+            data: arr,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+
+        res.status(500).json({
+          message: 'Db error, please try again',
+        });
+      });
+  }
+
+  async categoryWise(dto: stationCasesDto, res) {
+    await this.caseModel
+      .find({ stCode: dto.stCode })
+      .exec()
+      .then(async (stCases) => {
+        if (!stCases) {
+          res.status(409).json({
+            message: 'No registered cases',
+          });
+        } else {
+          var map = new Map();
+          await Promise.all(
+            stCases.map((eachcase) => {
+              if (map.has(eachcase.category)) {
+                map.set(eachcase.category, map.get(eachcase.category) + 1);
+              } else {
+                map.set(eachcase.category, 1);
+              }
+            }),
+          );
+          const arr = []
+          for (const [key,value] of map)
+          {
+            arr.push({
+              key,
+              value
+            })
+          }
+          console.log(arr);
+          res.status(200).json({
+            data: arr
+          })         
         }
       })
       .catch((err) => {

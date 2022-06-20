@@ -13,15 +13,15 @@ export class criminals {
     @Prop()
     age: Number;
 
-    @Prop()
-    address: String;
+    @Prop([String])
+    address: [String];
 
     @Prop()
     photourl: String;
     
     @Prop()
     cases: [{
-        caseId: String
+        caseNo: String
     }]
 }
 

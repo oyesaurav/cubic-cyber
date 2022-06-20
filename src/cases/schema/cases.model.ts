@@ -35,6 +35,12 @@ export class cases {
 
     @Prop()
     category: String;
+
+    @Prop()
+    latitude: String;
+
+    @Prop()
+    longitude: String;
 }
 
 export const caseModel = SchemaFactory.createForClass(cases);

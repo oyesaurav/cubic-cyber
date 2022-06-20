@@ -9,8 +9,12 @@ export class caseDTo {
     stCode: String;
     severity: Number;
 
-    @IsNumber()
-    accusedAadhaarNo: Number;
+    accused: [{
+        name: string,
+        age: Number,
+        aadhaarNo: Number,
+        address:  String
+    }]
 
     victim: [{
         name: String,
@@ -20,4 +24,11 @@ export class caseDTo {
     }];
 
     category: String;
+    latitude: String;
+    longitude: String;
+}
+
+export class stationCasesDto {
+    @IsNotEmpty()
+    stCode: String;
 }
