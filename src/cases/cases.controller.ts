@@ -27,4 +27,9 @@ export class CasesController {
         return this.caseService.caseInfo(dto,res)
     }
 
+    @Get('getall')
+    getAllCases(@Res({ passthrough: true }) res: Response) {
+        return this.caseService.allCases(res)
+    }
+
 }

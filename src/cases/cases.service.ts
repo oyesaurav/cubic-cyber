@@ -210,4 +210,25 @@ export class CasesService {
         });
     })
   }
+
+  async allCases(res) {
+    await this.caseModel.find()
+      .exec()
+      .then(async savedcases => {
+        if (!savedcases) {
+        res.status(409).send("case not found")
+        } else {
+          res.status(200).json({
+            allCases: savedcases
+          })
+      }
+      })
+      .catch(err => {
+        console.log(err);
+
+        res.status(500).json({
+          message: 'Db error, please try again',
+        });
+    })
+  }
 }
