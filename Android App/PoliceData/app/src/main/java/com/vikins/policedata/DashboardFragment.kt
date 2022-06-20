@@ -23,7 +23,7 @@ import kotlinx.coroutines.*
 class DashboardFragment : Fragment() {
    lateinit var binding: FragmentDashboardBinding
    private var  monthCases: MutableList<Int> = arrayListOf()
-   private val stCode = "dto.stCode"
+   private val stCode = "abc1"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,6 +61,7 @@ class DashboardFragment : Fragment() {
         }
         setdata()
         plotpiechart()
+        //radarchart()
         Log.d("Array2","RESPONSE:${monthCases.size}")
         return binding.root
     }
@@ -122,4 +123,139 @@ class DashboardFragment : Fragment() {
         }
 
     }
+//    fun radarchart(){
+//        var theftblweighteen = 0
+//        var theftblwthirty = 0
+//        var theftabvthirty = 0
+//        var murderblweighteen = 0
+//        var murderblwthirty = 0
+//        var murderabvthirty = 0
+//        var vioblweighteen = 0
+//        var vioblwthirty = 0
+//        var vioabvthirty = 0
+//        var phblweighteen = 0
+//        var phblwthirty = 0
+//        var phabvthirty = 0
+//        var othblweighteen = 0
+//        var othblwthirty = 0
+//        var othabvthirty = 0
+//        GlobalScope.launch(Dispatchers.Main) {
+//            val login = ApiInstance.loginuser().create(ApiService::class.java)
+//            val result = login.getallcase()
+//            if (result.body() != null){
+//                Log.d("RADAR", result.body()!!.allCases.size.toString())
+////                val size =  result.body()!!.allCases.size
+////                for (i in 0..size){
+////                    val size2 = result.body()!!.allCases[i].victim.size
+////                    if (result.body()!!.allCases[i].category == "Theft"){
+////                        for(j in 0..size2){
+////                            if(result.body()!!.allCases[i].victim[j].age<18){
+////                                theftblweighteen+=1
+////                            }
+////                            else if(result.body()!!.allCases[i].victim[j].age in 19..29){
+////                                theftblwthirty+=1
+////                            }
+////                            else{
+////                                theftabvthirty+=1
+////                            }
+////                        }
+////                    }
+////                    else if (result.body()!!.allCases[i].category == "Murder"){
+////                        for(j in 0..size2){
+////                            if(result.body()!!.allCases[i].victim[j].age<18){
+////                                murderblweighteen+=1
+////                            }
+////                            else if(result.body()!!.allCases[i].victim[j].age in 19..29){
+////                                murderblwthirty+=1
+////                            }
+////                            else{
+////                                murderabvthirty+=1
+////                            }
+////                        }
+////                    }
+////                    else if (result.body()!!.allCases[i].category == "Violence"){
+////                        for(j in 0..size2){
+////                            if(result.body()!!.allCases[i].victim[j].age<18){
+////                                vioblweighteen+=1
+////                            }
+////                            else if(result.body()!!.allCases[i].victim[j].age in 19..29){
+////                                vioblwthirty+=1
+////                            }
+////                            else{
+////                                vioabvthirty+=1
+////                            }
+////                        }
+////                    }
+////                    else if (result.body()!!.allCases[i].category == "Physical Harrasment"){
+////                        for(j in 0..size2){
+////                            if(result.body()!!.allCases[i].victim[j].age<18){
+////                                phblweighteen+=1
+////                            }
+////                            else if(result.body()!!.allCases[i].victim[j].age in 19..29){
+////                                phblwthirty+=1
+////                            }
+////                            else{
+////                                phabvthirty+=1
+////                            }
+////                        }
+////                    }
+////                    else{
+////                        for(j in 0..size2){
+////                            if(result.body()!!.allCases[i].victim[j].age<18){
+////                                othblweighteen+=1
+////                            }
+////                            else if(result.body()!!.allCases[i].victim[j].age in 19..29){
+////                                othblwthirty+=1
+////                            }
+////                            else{
+////                                othabvthirty+=1
+////                            }
+////                        }
+////                    }
+////                }
+//            }
+//
+//            var datavals = ArrayList<RadarEntry>()
+//            datavals.add(RadarEntry(theftblweighteen.toFloat()))
+//            datavals.add(RadarEntry(murderblweighteen.toFloat()))
+//            datavals.add(RadarEntry(vioblweighteen.toFloat()))
+//            datavals.add(RadarEntry(phblweighteen.toFloat()))
+//            datavals.add(RadarEntry(othblweighteen.toFloat()))
+//
+//            var datavals2 = ArrayList<RadarEntry>()
+//            datavals2.add(RadarEntry(theftblwthirty.toFloat()))
+//            datavals2.add(RadarEntry(murderblwthirty.toFloat()))
+//            datavals2.add(RadarEntry(vioblwthirty.toFloat()))
+//            datavals2.add(RadarEntry(phblwthirty.toFloat()))
+//            datavals2.add(RadarEntry(othblwthirty.toFloat()))
+//
+//            var datavals3 = ArrayList<RadarEntry>()
+//            datavals3.add(RadarEntry(theftabvthirty.toFloat()))
+//            datavals3.add(RadarEntry(murderabvthirty.toFloat()))
+//            datavals3.add(RadarEntry(vioabvthirty.toFloat()))
+//            datavals3.add(RadarEntry(phabvthirty.toFloat()))
+//            datavals3.add(RadarEntry(othabvthirty.toFloat()))
+//
+//            val radardataset1 = RadarDataSet(datavals,"Below 18")
+//            val radardataset2= RadarDataSet(datavals2,"Between 18 and 30")
+//            val radardataset3 = RadarDataSet(datavals3,"Above 30")
+////            radardataset1.color(R.color.purple_200)
+////            radardataset2.color(R.color.purple_500)
+////            radardataset2.color(R.color.purple_700)
+//
+//            radardataset1.color = resources.getColor(R.color.purple_200)
+//            radardataset2.color = resources.getColor(R.color.purple_500)
+//            radardataset3.color = resources.getColor(R.color.purple_700)
+//            val labels = arrayListOf(
+//                "Theft", "Murder", "Violence",
+//                "Physical Harassment","Others"
+//            )
+//            binding.radarchart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+//            var data = RadarData(radardataset1)
+//            data.addDataSet(radardataset2)
+//            data.addDataSet(radardataset3)
+//
+//            binding.radarchart.data = data
+//        }
+//    }
 }
