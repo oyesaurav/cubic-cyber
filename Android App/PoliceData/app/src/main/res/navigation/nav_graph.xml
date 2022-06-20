@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.vikins.policedata.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.vikins.policedata.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_firrecordsFragment"
+            app:destination="@id/firrecordsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/firrecordsFragment"
+        android:name="com.vikins.policedata.FirrecordsFragment"
+        android:label="fragment_firrecords"
+        tools:layout="@layout/fragment_firrecords" >
+        <action
+            android:id="@+id/action_firrecordsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+</navigation>
