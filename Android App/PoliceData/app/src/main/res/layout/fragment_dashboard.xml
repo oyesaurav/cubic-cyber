@@ -13,6 +13,8 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="Cases By Month"
+          android:fontFamily="@font/alef"
+          android:textStyle="bold"
           android:textSize="18sp"
           android:gravity="center"
           android:layout_marginTop="10dp"
@@ -27,14 +29,31 @@
           android:layout_height="wrap_content"
           android:text="Cases By Categories"
           android:textSize="18sp"
+          android:fontFamily="@font/alef"
           android:gravity="center"
           android:layout_marginTop="10dp"
+          android:textStyle="bold"
           android:layout_gravity="center"/>
       <com.github.mikephil.charting.charts.PieChart
           android:layout_width="300dp"
           android:layout_height="300dp"
           android:id="@+id/piechart"
           android:layout_gravity="center"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:textStyle="bold"
+          android:textSize="18sp"
+          android:fontFamily="@font/alef"
+          android:text="Analysis By Gender"
+          android:layout_gravity="center_horizontal"/>
+<!--      <com.github.mikephil.charting.charts.RadarChart-->
+<!--          android:layout_width="300dp"-->
+<!--          android:layout_height="300dp"-->
+<!--          android:layout_gravity="center_horizontal"-->
+<!--          android:id="@+id/radarchart"-->
+<!--          android:layout_marginHorizontal="30dp"/>-->
    </LinearLayout>
 
 </ScrollView>

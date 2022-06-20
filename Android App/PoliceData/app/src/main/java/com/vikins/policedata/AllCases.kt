@@ -1,5 +1,5 @@
 package com.vikins.policedata
 
-data class AllCases(
+data class AllCASES(
     val allCases: List<AllCase>
 )

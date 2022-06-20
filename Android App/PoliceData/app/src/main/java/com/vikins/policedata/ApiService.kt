@@ -8,9 +8,6 @@ interface ApiService {
     @FormUrlEncoded
     @POST("/auth/signin")
     suspend fun userlogin(@Field ("stCode")stCode:String, @Field("password") password:String):Response<UserData>
-
-//    @GET("/auth/check")
-//    suspend fun checkuser():Response<Boolean>
     @FormUrlEncoded
     @POST("/case/monthCases")
     suspend fun monthwiseCases(@Field("stCode")stCode:String):Response<CasesByMonthData>
@@ -22,4 +19,6 @@ interface ApiService {
     @POST("/case/get")
     @FormUrlEncoded
     suspend fun search(@Field("caseNo") caseNo:String):Response<CaseDeails>
+    @GET("case/getall")
+    suspend fun getallcase():Response<AllCASES>
 }

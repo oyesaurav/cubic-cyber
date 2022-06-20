@@ -12,16 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SearchFragment : Fragment() {
     lateinit var binding:FragmentSearchBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +44,8 @@ class SearchFragment : Fragment() {
                 val result = api.search(caseno)
                 if (result.body() != null){
                     Log.d("SEARCH",result.body().toString())
-                    binding.caseDetails.text = "Case Details: ${result.body()!!.caseInfo} Criminal Info: ${result.body()!!.criminalsInfo}"
+                    binding.caseDetails.text = "Case Details: ${result.body()!!.caseInfo}"
+                    binding.criminalDetails.text = "Criminal Info: ${result.body()!!.criminalsInfo}"
                 }
 
             }
